@@ -1,0 +1,36 @@
+body {
+    font: small/1.5em Verdana, Arial, Helvetica, serif;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+table {
+    border-width: 1px;
+    border-spacing: 0px;
+    border-style: solid;
+    border-color: gray;
+    border-collapse: separate;
+}
+
+.old {
+    text-decoration: line-through;
+}
+
+.floatybutton {
+    display: inline;
+}
+
+.numberbuttons { width: 2em; }
+
+.emphasis { font-weight:bold; }
+
+ul.menu{
+    margin: 0 auto;
+    padding: 0;
+    text-align: left;
+    list-style: none;
+    padding: 3px 10px 3px 10px;
+    margin: 5px;
+    border: 1px solid #CCC;
+}
+
+div { max-width:50ex; }
