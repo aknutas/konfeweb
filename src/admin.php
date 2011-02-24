@@ -91,6 +91,8 @@ if ($devtype == "guruplug")
 foreach ($lectures as $onelecture) {
     if (isset($onelecture['lecturer']))
         $name = "by " . $onelecture['lecturer'];
+    else
+        $name = "";
     echo "<p>Lecure ID ", $onelecture['lid'], ". ", "<a href=\"genpdf.php?lid=", $onelecture['lid'], "\">", $onelecture['name'], " ", $name, "</a></p>";
 }
 ?>

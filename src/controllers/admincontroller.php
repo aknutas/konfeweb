@@ -22,6 +22,7 @@
  * @author  Antti Knutas <firstname.lastname@lut.fi>
  * @license  http://www.gnu.org/licenses/gpl.txt GNU GPLv3
  */
+include 'settings.ini';
 include 'models/conference.php';
 include 'models/lecture.php';
 include 'models/status.php';
@@ -29,7 +30,6 @@ include 'models/comment.php';
 include 'models/user.php';
 include 'helpers/pdfoutputter.php';
 include 'helpers/authenticator.php';
-include 'helpers/hashbox.php';
 include 'helpers/devicecontrol.php';
 
 class Admin {
@@ -215,7 +215,8 @@ class Admin {
     }
 
     public function connect() {
-        date_default_timezone_set('Europe/Helsinki');
+        global $timezone;
+        date_default_timezone_set($timezone);
         $this->db = new SQLiteDatabase("./models/database.sqlite");
     }
 
