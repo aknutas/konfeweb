@@ -55,12 +55,12 @@ if ($authed) {
     </head>
     <body>
         <div id="header">
-            <img src="logoimages/lutbanner.gif" class="floatylogo"/>
+            <img src="logoimages/<?php echo $bannerfilename; ?>" class="floatylogo"/>
             <h1><?php echo $lecture['name'] ?>
                 <?php
                 if ($lecture['lecturer'] != null)
                     echo " by ", $lecture['lecturer'];
-                echo "<br/> Send questions at http://summerschool.dyndns.org/"
+                echo "<br/> Send questions at ", $webaddress
                 ?> </h1>
         </div>
 
