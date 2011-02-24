@@ -1,0 +1,27 @@
+CREATE TABLE [conference] ([kid] INTEGER NOT NULL PRIMARY KEY, [name] TEXT, [organization] TEXT);
+CREATE TABLE [feedback] ([cid] INTEGER NOT NULL PRIMARY KEY, [datetime] DATETIME, [comment] TEXT, [old] INTEGER(1,0), [lid] INTEGER NOT NULL REFERENCES [lecture](lid) ON DELETE CASCADE ON UPDATE CASCADE ON INSERT CASCADE);
+CREATE TABLE [lecture] ([lid] INTEGER NOT NULL PRIMARY KEY, [kid] INTEGER NOT NULL REFERENCES [conference](kid) ON DELETE CASCADE ON UPDATE CASCADE ON INSERT CASCADE, [name] TEXT, [lecturer] TEXT, [contact] TEXT);
+CREATE TABLE [settings] ([sid] INTEGER NOT NULL PRIMARY KEY, [setting] TEXT, [value] TEXT);
+CREATE TABLE [user] ([uid] INTEGER PRIMARY KEY, [user] TEXT NOT NULL, [pass] TEXT NOT NULL, [admin] INTEGER);
+CREATE UNIQUE INDEX [idx_feedback_cid_lid] ON [feedback] ([lid], [cid]);
+CREATE UNIQUE INDEX [idx_settings_setting] ON [settings] ([setting]);
+CREATE UNIQUE INDEX [idx_user_user] ON [user] ([user]);
+CREATE TRIGGER [fk_feedback_lecture_del1] BEFORE DELETE ON [lecture] WHEN (old.[lid] IN (SELECT [lid] FROM [feedback] GROUP BY [lid])) BEGIN
+DELETE FROM [feedback] WHERE [lid] = old.[lid];
+END;
+CREATE TRIGGER [fk_feedback_lecture_ins1] BEFORE INSERT ON [feedback] WHEN (new.[lid] NOT IN (SELECT [lid] FROM [lecture] GROUP BY [lid])) BEGIN
+SELECT RAISE( ABORT, 'Foreign key violated: fk_feedback_lecture_ins1' );
+END;
+CREATE TRIGGER [fk_feedback_lecture_upd1] BEFORE UPDATE ON [lecture] WHEN (old.[lid] IN (SELECT [lid] FROM [feedback] GROUP BY [lid])) BEGIN
+UPDATE [feedback] SET [lid] = new.[lid] WHERE [lid] = old.[lid];
+END;
+CREATE TRIGGER [fk_lecture_conference_del] BEFORE DELETE ON [conference] WHEN (old.[kid] IN (SELECT [kid] FROM [lecture] GROUP BY [kid])) BEGIN
+DELETE FROM [lecture] WHERE [kid] = old.[kid];
+END;
+CREATE TRIGGER [fk_lecture_conference_ins] BEFORE INSERT ON [lecture] WHEN (new.[kid] NOT IN (SELECT [kid] FROM [conference] GROUP BY [kid])) BEGIN
+SELECT RAISE( ABORT, 'Foreign key violated: fk_lecture_conference_ins' );
+END;
+CREATE TRIGGER [fk_lecture_conference_upd] BEFORE UPDATE ON [conference] WHEN (old.[kid] IN (SELECT [kid] FROM [lecture] GROUP BY [kid])) BEGIN
+UPDATE [lecture] SET [kid] = new.[kid] WHERE [kid] = old.[kid];
+END;
+
